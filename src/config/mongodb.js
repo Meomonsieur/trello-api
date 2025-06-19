@@ -2,13 +2,12 @@
 // hoangtienquan2003
 // Rn3DTowsRkHjRoZC
 import { MongoClient, ServerApiVersion } from 'mongodb'
+import { env } from '~/config/environment'
 
-const MONGODB_URI = 'mongodb+srv://hoangtienquan2003:Rn3DTowsRkHjRoZC@cluster0.luntpwp.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-const DATABASE_NAME = 'trello-web'
 
 let trelloDatabaseInstance = null
 
-const mongoClientInstance = new MongoClient(MONGODB_URI, {
+const mongoClientInstance = new MongoClient(env.MONGODB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -21,10 +20,15 @@ const mongoClientInstance = new MongoClient(MONGODB_URI, {
 
 export const CONNECT_DB = async () => {
   await mongoClientInstance.connect()
-  trelloDatabaseInstance = mongoClientInstance.db(DATABASE_NAME)
+  trelloDatabaseInstance = mongoClientInstance.db(env.DATABASE_NAME)
+}
+
+export const CLOSE_DB = async () => {
+  await mongoClientInstance.close()
 }
 
 export const GET_DB = () => {
   if (!trelloDatabaseInstance) throw new Error('Must connect to Database first')
   return trelloDatabaseInstance
 }
+
