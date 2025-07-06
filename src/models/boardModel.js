@@ -81,7 +81,7 @@ const getDetails = async (id) => {
       } }
     ]).toArray()
     
-    return result
+    return result [0] || null 
   } catch (error) {
     throw new Error(error)
   }
